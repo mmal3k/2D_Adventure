@@ -11,17 +11,20 @@ import java.io.IOException;
 public class Player extends Entity {
     GamePanel gp ;
     KeyHandler keyH ;
+    public final int screenX , screenY ;
 
     public Player(GamePanel gp , KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
+        screenX = (gp.screenWidth - gp.tileSize) / 2  ;
+        screenY = (gp.screenHeight - gp.tileSize)/ 2 ;
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
 
@@ -47,19 +50,19 @@ public class Player extends Entity {
         if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
             if (keyH.upPressed) {
                 direction = "up";
-                this.y -= this.speed;
+                worldY -= this.speed;
             }
             if (keyH.downPressed){
                 direction = "down";
-                this.y += this.speed ;
+                worldY += this.speed ;
             }
             if (keyH.leftPressed){
                 direction = "left";
-                this.x -= this.speed ;
+                worldX -= this.speed ;
             }
             if (keyH.rightPressed ){
                 direction = "right";
-                this.x += this.speed ;
+                worldX += this.speed ;
             }
 
             spriteCounter ++ ;
@@ -77,10 +80,6 @@ public class Player extends Entity {
 
 
     public void draw(Graphics2D g2){
-
-//        g2.setColor(Color.white);
-//
-//        g2.fillRect(this.x , this.y, gp.tileSize , gp.tileSize);
 
         BufferedImage image = null ;
 
@@ -119,7 +118,7 @@ public class Player extends Entity {
                 break ;
         }
 
-        g2.drawImage(image , x ,y ,gp.tileSize , gp.tileSize , null);
+        g2.drawImage(image , screenX ,screenY ,gp.tileSize , gp.tileSize , null);
 
     }
 }
