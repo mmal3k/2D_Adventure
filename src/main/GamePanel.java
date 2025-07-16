@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements Runnable{
     Sound se = new Sound();
     Sound music = new Sound();
     public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
 
     // Entity and objects
     public Player player = new Player(this , keyH);
@@ -115,7 +116,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         tileM.draw(g2);
 
+
+
         player.draw(g2);
+
 
         for (SuperObject object : obj) {
             if (object != null) {
@@ -123,6 +127,8 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
+
+        ui.draw(g2);
         g2.dispose();
      }
 
