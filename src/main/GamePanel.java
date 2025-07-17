@@ -29,11 +29,17 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
 
+    //Game State
+    public int gameState ;
+    public final int playState  = 1;
+    public final int pauseState  = 2;
+
+
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     // SYSTEM
     Thread gameThread;
-    KeyHandler keyH  = new KeyHandler();
+    KeyHandler keyH  = new KeyHandler(this);
     TileManager tileM  = new TileManager(this);
     Sound se = new Sound();
     Sound music = new Sound();
@@ -63,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void startGameThread () {
         gameThread = new Thread(this);
         gameThread.start();
+        gameState = 1;
     }
 
     @Override
@@ -106,7 +113,13 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-        player.update();
+        if (gameState == playState) {
+            player.update();
+        }
+
+        if (gameState == pauseState) {
+            // to implement
+        }
     }
 
     public void paintComponent(Graphics g) {
