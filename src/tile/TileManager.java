@@ -1,9 +1,11 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,34 +29,30 @@ public class TileManager {
 
 
     public void getTileImage() {
+
+
+            setup(0 , "grass" , false);
+            setup(1 , "wall" , true);
+            setup(2 , "water" , true);
+            setup(3 , "earth" , false);
+            setup(4 , "tree" , true);
+            setup(5 , "sand" , false);
+
+
+    }
+
+    public void setup(int index , String    imagePath , boolean collision) {
+        UtilityTool uTool = new UtilityTool() ;
+
         try {
-            tiles[0] = new Tile();
-            tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
-
-            tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-            tiles[1].collision= true ;
-
-            tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-            tiles[2].collision = true ;
-
-            tiles[3] = new Tile();
-            tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-
-            tiles[4] = new Tile();
-            tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-            tiles[4].collision = true ;
-
-
-            tiles[5] = new Tile();
-            tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-
-        }catch(IOException e){
+            tiles[index] = new Tile();
+            tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+imagePath+".png"));
+            tiles[index].image =uTool.scaledImage(tiles[0].image , gp.tileSize , gp.tileSize);
+            tiles[index].collision = collision ;
+        }catch(IOException e) {
             e.printStackTrace();
         }
     }
-
     public void loadMap (String map) {
         try{
             InputStream is = getClass().getResourceAsStream("/maps/"+map+".txt");
@@ -89,7 +87,7 @@ public class TileManager {
                         && worldY + gp.tileSize > gp.player.worldY  - gp.player.screenY
                         && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
-                    g2.drawImage(tiles[tileNum].image , screenX , screenY    , gp.tileSize , gp.tileSize , null);
+                    g2.drawImage(tiles[tileNum].image , screenX , screenY ,  null);
                 }
             }
         }
