@@ -47,7 +47,7 @@ public class TileManager {
         try {
             tiles[index] = new Tile();
             tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+imagePath+".png"));
-            tiles[index].image =uTool.scaledImage(tiles[0].image , gp.tileSize , gp.tileSize);
+            tiles[index].image =uTool.scaledImage(tiles[index].image , gp.tileSize , gp.tileSize);
             tiles[index].collision = collision ;
         }catch(IOException e) {
             e.printStackTrace();
