@@ -13,6 +13,7 @@ public class UI {
     int messageCounter = 0 ;
     public boolean gameFinished = false;
     public String currentDialog = "";
+    public int commandNum = 0 ;
 
     public UI (GamePanel gp){
         this.gp = gp ;
@@ -34,6 +35,9 @@ public class UI {
         g2.setFont(maruMonica);
         g2.setColor(Color.white);
 
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen();
+        }
         if (gp.gameState == gp.playState) {
 
         }
@@ -109,5 +113,63 @@ public class UI {
         g2.drawRoundRect(x+5 , y+5 ,width - 10 , height -10 , 25 , 25);
     }
 
+    public void drawTitleScreen() {
+
+//        Background Color
+//        g2.setColor(new Color(70 , 120 ,80));
+//        g2.fillRect(0 , 0, gp.screenWidth , gp.screenHeight);
+
+//        Title name
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD , 96F));
+        String text = "Adventure 2D" ;
+        int x = getXForCenteredText(text);
+        int y = gp.tileSize * 3 ;
+
+
+//        text Shadow
+        g2.setColor(Color.gray);
+        g2.drawString(text , x+5, y+5);
+
+
+        g2.setColor(Color.white);
+        g2.drawString(text , x , y);
+
+//        add spirit image
+        x= (gp.screenWidth - gp.tileSize*2) / 2  ;
+        y+= gp.tileSize * 2;
+        g2.drawImage(gp.player.down1 , x , y ,gp.tileSize * 2 , gp.tileSize * 2 , null);
+
+
+//        Menu
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD , 48F));
+        text = "NEW GAME";
+
+        x = getXForCenteredText(text) ;
+        y += gp.tileSize *3 ;
+        g2.drawString(text , x, y);
+        if (commandNum == 0) {
+            g2.drawString(">" , x - gp.tileSize, y);
+        }
+        text = "LOAD GAME";
+
+        x = getXForCenteredText(text) ;
+        y += gp.tileSize ;
+        g2.drawString(text , x, y);
+        if (commandNum == 1) {
+            g2.drawString(">" , x - gp.tileSize, y);
+        }
+
+        text = "QUIT";
+
+        x = getXForCenteredText(text) ;
+        y += gp.tileSize  ;
+        g2.drawString(text , x, y);
+        if (commandNum == 2) {
+            g2.drawString(">" , x - gp.tileSize, y);
+        }
+    }
+
 
 }
+
+
