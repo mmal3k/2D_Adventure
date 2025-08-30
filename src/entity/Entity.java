@@ -32,6 +32,9 @@ public class Entity {
     int dialogueIdx = 0;
 
 
+    //Character status
+    public int maxLife , life ;
+
     public Entity(GamePanel gp) {
         this.gp = gp ;
     }
