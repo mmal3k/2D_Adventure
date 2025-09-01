@@ -51,6 +51,7 @@ public class Player extends Entity {
 
     public void update() {
 
+
         if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
             if (keyH.upPressed) {
                 direction = "up";
@@ -83,6 +84,10 @@ public class Player extends Entity {
             int npcIdx = gp.cChecker.checkEntity(this , gp.npc);
             interactWithNPC(npcIdx);
 
+
+//            Check monster collision
+            int monsterIdx = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIdx);
 //            Check event
             gp.eHandler.checkEvent();
 
@@ -120,6 +125,15 @@ public class Player extends Entity {
             if (standCounter == 20) {
                 spriteNum = 1;
                 standCounter = 0;
+            }
+        }
+
+
+        if (invincible) {
+            invincibleCpt ++ ;
+            if (invincibleCpt > 60) {
+                invincible = false ;
+                invincibleCpt = 0 ;
             }
         }
 
@@ -181,7 +195,29 @@ public class Player extends Entity {
                 break ;
         }
 
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 0.3f));
+        }
+
         g2.drawImage(image , screenX ,screenY , null);
 
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 1f));
+
+//        DEBUG
+//        g2.setFont(new Font("Arial" , Font.PLAIN , 26));
+//        g2.setColor(Color.white);
+//        g2.drawString("Invincible : "+invincibleCpt , 10 , 400);
+
+    }
+
+    public void contactMonster(int idx) {
+        if (idx != 999) {
+            if (!invincible) {
+                life -= 1 ;
+                invincible = true ;
+            }
+
+
+        }
     }
 }

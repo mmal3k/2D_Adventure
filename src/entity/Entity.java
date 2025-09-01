@@ -19,8 +19,13 @@ public class Entity {
     public Rectangle solidArea = new Rectangle(0 , 0 ,48 ,48);
     public int solidAreaDefaultX , solidAreaDefaultY;
     public boolean collisionOn = false ;
+
+    public boolean invincible  = false ;
+    public int invincibleCpt = 0 ;
     public int actionLockCounter = 0 ;
     GamePanel gp ;
+
+    public int type ;
 
     public BufferedImage image , image2 , image3 ;
     public String name ;
@@ -85,7 +90,16 @@ public class Entity {
 
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this,false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this , gp.npc);
+        gp.cChecker.checkEntity(this , gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer ) {
+            if (!gp.player.invincible) {
+                gp.player.life -= 1 ;
+                gp.player.invincible = true ;
+            }
+        }
 
         // IF collisionOn == false player can move
 
