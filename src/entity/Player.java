@@ -52,7 +52,7 @@ public class Player extends Entity {
     public void update() {
 
 
-        if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed) {
+        if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed) {
             if (keyH.upPressed) {
                 direction = "up";
 
@@ -91,12 +91,12 @@ public class Player extends Entity {
 //            Check event
             gp.eHandler.checkEvent();
 
-            gp.keyH.enterPressed = false ;
+
 
 
             // IF collisionOn == false player can move
 
-            if (!collisionOn) {
+            if (!collisionOn && !keyH.enterPressed) {
                 if (keyH.upPressed) {
                     worldY -= this.speed;
                 }
@@ -109,7 +109,10 @@ public class Player extends Entity {
                 if (keyH.rightPressed) {
                     worldX += this.speed;
                 }
+
             }
+
+            gp.keyH.enterPressed = false ;
 
             spriteCounter ++ ;
             if (spriteCounter > 12) {
@@ -202,11 +205,6 @@ public class Player extends Entity {
         g2.drawImage(image , screenX ,screenY , null);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 1f));
-
-//        DEBUG
-//        g2.setFont(new Font("Arial" , Font.PLAIN , 26));
-//        g2.setColor(Color.white);
-//        g2.drawString("Invincible : "+invincibleCpt , 10 , 400);
 
     }
 
