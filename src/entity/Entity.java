@@ -11,21 +11,20 @@ import java.io.IOException;
 public class Entity {
 
     public int worldX,worldY ;
-
     public int speed ;
-
     public BufferedImage up1 , up2 , left1 , left2 , right1 , right2 , down1 , down2 ;
-
-    public String direction ;
-
+    public String direction = "down" ;
     public int spriteCounter = 0 ;
     public int spriteNum = 1 ;
-
     public Rectangle solidArea = new Rectangle(0 , 0 ,48 ,48);
     public int solidAreaDefaultX , solidAreaDefaultY;
     public boolean collisionOn = false ;
     public int actionLockCounter = 0 ;
     GamePanel gp ;
+
+    public BufferedImage image , image2 , image3 ;
+    public String name ;
+    public boolean collision = false ;
 
     //DIALOG
     String dialogues[] = new String[20];

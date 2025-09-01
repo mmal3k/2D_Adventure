@@ -1,7 +1,7 @@
 package main;
 
+import entity.Entity;
 import object.OBJ_Heart;
-import object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -36,7 +36,7 @@ public class UI {
         }
 
 //        create HUD object
-        SuperObject heart = new OBJ_Heart(gp);
+        Entity heart = new OBJ_Heart(gp);
         heart_full = heart.image ;
         heart_half = heart.image2 ;
         heart_blank = heart.image3 ;
@@ -72,7 +72,7 @@ public class UI {
         int y = gp.tileSize / 2 ;
 
         int i = 0 ;
-
+//
 //        Draw blank hear
         while (i < gp.player.maxLife / 2) {
             g2.drawImage(heart_blank , x ,y , null);
