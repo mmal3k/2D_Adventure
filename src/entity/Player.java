@@ -149,10 +149,10 @@ public class Player extends Entity {
 
 
         if (invincible) {
-            invincibleCpt ++ ;
-            if (invincibleCpt > 60) {
+            invincibleCounter++ ;
+            if (invincibleCounter > 60) {
                 invincible = false ;
-                invincibleCpt = 0 ;
+                invincibleCounter = 0 ;
             }
         }
 
@@ -223,6 +223,7 @@ public class Player extends Entity {
                     gp.gameState = gp.dialogueState;
                     gp.npc[index].speak();
             }else {
+                    gp.playSE(7);
                     attacking = true ;
             }
         }
@@ -292,6 +293,7 @@ public class Player extends Entity {
     public void contactMonster(int idx) {
         if (idx != 999) {
             if (!invincible) {
+                gp.playSE(6);
                 life -= 1 ;
                 invincible = true ;
             }
@@ -303,10 +305,11 @@ public class Player extends Entity {
     public void damageMonster(int idx) {
         if (idx != 999) {
             if (!gp.monster[idx].invincible) {
+                gp.playSE(5);
                 gp.monster[idx].life -= 1 ;
                 gp.monster[idx].invincible = true ;
                 if (gp.monster[idx].life <= 0) {
-                    gp.monster[idx] = null ;
+                    gp.monster[idx].dying = true ;
                 }
             }
 
