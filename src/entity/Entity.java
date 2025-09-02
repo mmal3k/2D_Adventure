@@ -10,12 +10,12 @@ import java.io.IOException;
 
 public class Entity {
 
-    public int worldX,worldY ;
+
     public int speed ;
     public BufferedImage up1 , up2 , left1 , left2 , right1 , right2 , down1 , down2 ;
     public BufferedImage attackUp1,attackUp2,attackDown1,attackDown2,attackLeft1,attackLeft2,attackRight1 , attackRight2 ;
-    public String direction = "down" ;
-    public int spriteNum = 1 ;
+
+
     public Rectangle solidArea = new Rectangle(0 , 0 ,48 ,48);
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     public int solidAreaDefaultX , solidAreaDefaultY;
@@ -28,21 +28,30 @@ public class Entity {
 
     public BufferedImage image , image2 , image3 ;
     public String name ;
-    public boolean collision = false ;
 
+
+//    STATE
+    public int worldX,worldY ;
+    public String direction = "down" ;
+    public int spriteNum = 1 ;
+    int dialogueIdx = 0;
+    public boolean collision = false ;
     public boolean attacking = false;
     public boolean alive = true ;
     public boolean dying = false ;
+    public boolean hpBarOn = false ;
 
-//    Counter
+
+//    COUNTER
     public int spriteCounter = 0 ;
     public int invincibleCounter = 0 ;
     public int actionLockCounter = 0 ;
     public int dyingCounter = 0 ;
+    public int hpBarCounter =  0 ;
 
     //DIALOG
     String dialogues[] = new String[20];
-    int dialogueIdx = 0;
+
 
 
     //Character status
@@ -68,6 +77,8 @@ public class Entity {
     }
 
     public void setAction () {}
+
+    public void damageReaction () {}
 
     public void speak() {
         if (dialogues[dialogueIdx] == null) {
@@ -174,9 +185,30 @@ public class Entity {
                     if (spriteNum == 2) {image = right2 ;}
                     break ;
             }
+//          Monster HP bar
+            if(type == 2 && hpBarOn) {
+                double oneScale = (double) gp.tileSize / maxLife ;
+                double hpBarValue = oneScale * life ;
+
+                g2.setColor(new Color(35 , 35 ,35));
+                g2.fillRect(screenX - 1, screenY - 16 , gp.tileSize + 2 , 12);
+
+                g2.setColor(new Color(255 , 0 ,30));
+                g2.fillRect(screenX , screenY - 15, (int) hpBarValue , 10);
+
+                hpBarCounter ++ ;
+                if (hpBarCounter > 600) {
+                    hpBarOn = false ;
+                    hpBarCounter = 0 ;
+                }
+
+            }
+
 
             if (invincible) {
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 0.4f));
+                hpBarOn = true ;
+                hpBarCounter = 0 ;
+                changeAlpha(g2 , 0.4f);
             }
 
             if (dying) {
@@ -185,7 +217,7 @@ public class Entity {
 
             g2.drawImage(image , screenX , screenY , gp.tileSize , gp.tileSize , null);
 
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 1f));
+            changeAlpha(g2 , 1f);
         }
     }
 
