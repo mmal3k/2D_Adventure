@@ -29,6 +29,19 @@ public class Entity {
     public BufferedImage image , image2 , image3 ;
     public String name ;
 
+    public int level ;
+//    public int life ;
+    public int strength ;
+    public int dexterity ;
+    public int attack ;
+    public int defense ;
+    public int exp ;
+    public int nextLevelExp ;
+    public int coin ;
+    public Entity currentWeapon ;
+    public Entity currentShield ;
+
+
 
 //    STATE
     public int worldX,worldY ;
@@ -56,6 +69,11 @@ public class Entity {
 
     //Character status
     public int maxLife , life ;
+
+//    ITEM ATTRIBUTES
+    public int attackValue ;
+    public int defenseValue ;
+
 
     public Entity(GamePanel gp) {
         this.gp = gp ;
