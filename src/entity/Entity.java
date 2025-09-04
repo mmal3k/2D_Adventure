@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Entity {
 
@@ -136,7 +137,14 @@ public class Entity {
             if (!gp.player.invincible) {
 //                we can give damage
                 gp.playSE(6);
-                gp.player.life -= 1 ;
+
+                int damage = attack - gp.player.defense ;
+
+                if (damage < 0) {
+                    damage = 0 ;
+                }
+
+                gp.player.life -= damage ;
                 gp.player.invincible = true ;
             }
         }
@@ -144,18 +152,10 @@ public class Entity {
         // IF collisionOn == false player can move
 
         if (!collisionOn) {
-            if (direction == "up") {
-                worldY -= this.speed;
-            }
-            if (direction == "down") {
-                worldY += this.speed;
-            }
-            if (direction == "left") {
-                worldX -= this.speed;
-            }
-            if (direction == "right") {
-                worldX += this.speed;
-            }
+            if (Objects.equals(direction, "up")) {worldY -= this.speed;}
+            if (Objects.equals(direction, "down")) {worldY += this.speed;}
+            if (Objects.equals(direction, "left")) {worldX -= this.speed;}
+            if (Objects.equals(direction, "right")) {worldX += this.speed;}
         }
 
         spriteCounter ++ ;

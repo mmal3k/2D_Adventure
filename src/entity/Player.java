@@ -51,12 +51,12 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
 
-        attack = getAttack() ;
+        attack = getAttack();
         defense = getDefense();
     }
 
     public int getAttack() {
-      return strength * currentWeapon.attack ;
+      return strength * currentWeapon.attackValue ;
     }
 
     public int getDefense() {
@@ -92,27 +92,12 @@ public class Player extends Entity {
         if (attacking) {
             attack();
         }else if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed) {
-            if (keyH.upPressed) {
-                direction = "up";
-
-            }
-            if (keyH.downPressed){
-                direction = "down";
-
-            }
-            if (keyH.leftPressed){
-                direction = "left";
-
-            }
-            if (keyH.rightPressed ){
-                direction = "right";
-
-            }
-
+            if (keyH.upPressed) {direction = "up";}
+            if (keyH.downPressed){direction = "down";}
+            if (keyH.leftPressed){direction = "left";}
+            if (keyH.rightPressed ){direction = "right";}
             collisionOn = false ;
             gp.cChecker.checkTile(this);
-
-
 
             // Check object
             int objIdx = gp.cChecker.checkObject(this, true);
@@ -131,24 +116,12 @@ public class Player extends Entity {
             gp.eHandler.checkEvent();
 
 
-
-
             // IF collisionOn == false player can move
-
             if (!collisionOn && !keyH.enterPressed) {
-                if (keyH.upPressed) {
-                    worldY -= this.speed;
-                }
-                if (keyH.downPressed) {
-                    worldY += this.speed;
-                }
-                if (keyH.leftPressed) {
-                    worldX -= this.speed;
-                }
-                if (keyH.rightPressed) {
-                    worldX += this.speed;
-                }
-
+                if (keyH.upPressed) {worldY -= this.speed;}
+                if (keyH.downPressed) {worldY += this.speed;}
+                if (keyH.leftPressed) {worldX -= this.speed;}
+                if (keyH.rightPressed) {worldX += this.speed;}
             }
 
             if (keyH.enterPressed && !attackCanceled) {
@@ -161,11 +134,8 @@ public class Player extends Entity {
 
             spriteCounter ++ ;
             if (spriteCounter > 12) {
-                if (spriteNum == 1) {
-                    spriteNum = 2 ;
-                }else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
+                if (spriteNum == 1) {spriteNum = 2 ;}
+                else if (spriteNum == 2) {spriteNum = 1;}
                 spriteCounter = 0;
             }
         } else {
@@ -204,18 +174,10 @@ public class Player extends Entity {
 //            adjust the player x,y for the attack area
 
             switch (direction) {
-                case "up":
-                    worldY -= attackArea.height;
-                    break;
-                case "down":
-                    worldY += attackArea.height;
-                    break;
-                case "left":
-                    worldX -= attackArea.width;
-                    break;
-                case "right":
-                    worldX += attackArea.width;
-                    break;
+                case "up": worldY -= attackArea.height;break;
+                case "down": worldY += attackArea.height;break;
+                case "left": worldX -= attackArea.width;break;
+                case "right": worldX += attackArea.width;break;
             }
 //            attack area becomes solid area
             solidArea.width = attackArea.width ;
@@ -321,7 +283,13 @@ public class Player extends Entity {
         if (idx != 999) {
             if (!invincible) {
                 gp.playSE(6);
-                life -= 1 ;
+                int damage = gp.monster[idx].attack - defense ;
+                if (damage < 0) {
+                    damage = 0 ;
+                }
+
+
+                life -= damage ;
                 invincible = true ;
             }
 
@@ -333,13 +301,47 @@ public class Player extends Entity {
         if (idx != 999) {
             if (!gp.monster[idx].invincible) {
                 gp.playSE(5);
-                gp.monster[idx].life -= 1 ;
+
+                int damage = attack - gp.monster[idx].defense ;
+                if (damage < 0) {
+                    damage = 0 ;
+                }
+
+
+                gp.monster[idx].life -= damage ;
+
+                gp.ui.addMessage(damage + " damage!");
                 gp.monster[idx].invincible = true ;
                 gp.monster[idx].damageReaction();
                 if (gp.monster[idx].life <= 0) {
                     gp.monster[idx].dying = true ;
+                    gp.ui.addMessage("Killed the "+gp.monster[idx].name +"!");
+                    exp += gp.monster[idx].exp;
+                    gp.ui.addMessage("Exp + "+gp.monster[idx].exp +"!");
+
+                    checkLevelUp();
                 }
             }
+
+        }
+    }
+
+    public void checkLevelUp() {
+        if (exp >= nextLevelExp) {
+
+            level += 1;
+            nextLevelExp = nextLevelExp*2 ;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+
+            attack = getAttack();
+            defense = getDefense();
+
+
+            gp.playSE(8);
+            gp.gameState = gp.dialogueState ;
+            gp.ui.currentDialog = "you level " + level + " now\n" + "You are Stronger now !";
 
         }
     }
