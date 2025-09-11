@@ -81,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void startGameThread () {
         gameThread = new Thread(this);
         gameThread.start();
+
     }
 
     @Override
@@ -167,28 +168,23 @@ public class GamePanel extends JPanel implements Runnable{
         } else {
 //          TILE
             tileM.draw(g2);
-
 //            ADD ENTITIES TO THE LIST
             entityList.add(player);
-
             for (int i = 0 ; i < npc.length ; i++) {
                 if(npc[i] != null) {
                     entityList.add(npc[i]);
                 }
             }
-
             for(int i = 0 ;  i < obj.length ; i++) {
                 if (obj[i] != null) {
                     entityList.add(obj[i]);
                 }
             }
-
             for(int i = 0 ;  i < monster.length ; i++) {
                 if (monster[i] != null) {
                     entityList.add(monster[i]);
                 }
             }
-
 //            SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
@@ -204,7 +200,6 @@ public class GamePanel extends JPanel implements Runnable{
 
 //            Empty Entity List
             entityList.clear();
-
 
 //          UI
             ui.draw(g2);

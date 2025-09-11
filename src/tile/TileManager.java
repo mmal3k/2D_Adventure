@@ -17,14 +17,14 @@ public class TileManager {
     public Tile[] tiles ;
     public int mapTileNum[][];
 
-
+//    public String currentMap ;
     public TileManager(GamePanel gp ){
         this.gp = gp ;
         this.tiles = new Tile[50] ;
         getTileImage();
         mapTileNum = new int[gp.maxWorldRow][gp.maxWorldCol];
-
-        loadMap("worldV2");
+//        currentMap = "worldV2" ;
+        loadMap("worldV2" );
     }
 
 
@@ -76,13 +76,6 @@ public class TileManager {
             setup(40 , "wall" , true);
             setup(41 , "tree" , true);
 
-
-
-
-
-
-
-
     }
 
     public void setup(int index , String    imagePath , boolean collision) {
@@ -98,6 +91,7 @@ public class TileManager {
         }
     }
     public void loadMap (String map) {
+
         try{
             InputStream is = getClass().getResourceAsStream("/maps/"+map+".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -106,18 +100,19 @@ public class TileManager {
                 String line = br.readLine();
                 String number[] = line.split(" ");
                 for (int j =0 ; j < gp.maxWorldCol ; j++){
-
                     mapTileNum[i][j] = Integer.parseInt(number[j]);
                 }
             }
+            System.out.println("updated matrix");
             br.close();
         }catch(Exception e){
 
         }
+
+
     }
 
     public void draw(Graphics2D g2) {
-
         for (int i =0 ; i < gp.maxWorldRow ; i++) {
             for (int j = 0 ; j < gp.maxWorldCol ; j++){
                 int tileNum = mapTileNum[i][j];
