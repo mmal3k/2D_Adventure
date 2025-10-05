@@ -305,27 +305,31 @@ public class UI {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(cursorX , cursorY , cursorWidth , cursorHeight , 10 , 10);
 
-//        description frame
-        int dFrameX = frameX ;
-        int dFrameY = frameY + frameHeight ;
-        int dFrameWidth = frameWidth ;
-        int dFrameHeight = gp.tileSize * 3 ;
 
-        drawSubWindow(dFrameX , dFrameY , dFrameWidth , dFrameHeight);
-//        Draw Description text
-        int textX = dFrameX + 20;
-        int textY = dFrameY + gp.tileSize ;
-        g2.setFont(g2.getFont().deriveFont(28F));
 
 
         int itemIdx = getItemIndexOnSlot();
 
         if (itemIdx < gp.player.inventory.size()) {
+            //        description frame
+            int dFrameX = frameX ;
+            int dFrameY = frameY + frameHeight ;
+            int dFrameWidth = frameWidth ;
+            int dFrameHeight = gp.tileSize * 3 ;
+
+            drawSubWindow(dFrameX , dFrameY , dFrameWidth , dFrameHeight);
+//        Draw Description text
+            int textX = dFrameX + 20;
+            int textY = dFrameY + gp.tileSize ;
+            g2.setFont(g2.getFont().deriveFont(28F));
+
             for(String line :gp.player.inventory.get(itemIdx).description.split("\n")) {
                 g2.drawString(line , textX , textY);
                 textY += 32 ;
             }
         }
+
+
 
 
     }
@@ -453,7 +457,7 @@ public class UI {
     }
 
     public int getItemIndexOnSlot() {
-        int itemIdx = slotCol+ (slotRow * 5);
+        int itemIdx = slotCol + (slotRow * 5);
         return  itemIdx ;
     }
 

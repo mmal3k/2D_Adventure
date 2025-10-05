@@ -66,9 +66,6 @@ public class Player extends Entity {
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
         inventory.add(new OBJ_Key(gp));
-
-
-
     }
 
     public int getAttack() {
