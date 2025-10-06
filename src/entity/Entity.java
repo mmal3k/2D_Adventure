@@ -23,9 +23,9 @@ public class Entity {
     public boolean collisionOn = false ;
 
     public boolean invincible  = false ;
-    GamePanel gp ;
+    public GamePanel gp ;
 
-    public int type ;
+
 
     public BufferedImage image , image2 , image3 ;
     public String name ;
@@ -75,6 +75,14 @@ public class Entity {
     public int attackValue ;
     public int defenseValue ;
     public String description = "" ;
+    public int type ; //
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_monster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_consumable = 6;
 
 
     public Entity(GamePanel gp) {
@@ -122,6 +130,8 @@ public class Entity {
                 break;
         }
     }
+
+    public void use (Entity entity) {}
 
     public void update() {
         setAction();
@@ -205,7 +215,7 @@ public class Entity {
                     break ;
             }
 //          Monster HP bar
-            if(type == 2 && hpBarOn) {
+            if(type == type_monster && hpBarOn) {
                 double oneScale = (double) gp.tileSize / maxLife ;
                 double hpBarValue = oneScale * life ;
 
