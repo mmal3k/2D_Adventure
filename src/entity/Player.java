@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -58,6 +59,8 @@ public class Player extends Entity {
 
         attack = getAttack();
         defense = getDefense();
+
+        projectile = new OBJ_Fireball(gp);
         setItems();
     }
 
@@ -117,7 +120,8 @@ public class Player extends Entity {
 
         if (attacking) {
             attack();
-        }else if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed) {
+        }
+        else if (keyH.upPressed || keyH.downPressed || keyH.rightPressed || keyH.leftPressed || keyH.enterPressed) {
             if (keyH.upPressed) {direction = "up";}
             if (keyH.downPressed){direction = "down";}
             if (keyH.leftPressed){direction = "left";}
@@ -164,7 +168,8 @@ public class Player extends Entity {
                 else if (spriteNum == 2) {spriteNum = 1;}
                 spriteCounter = 0;
             }
-        } else {
+        }
+        else {
             standCounter ++ ;
             if (standCounter == 20) {
                 spriteNum = 1;
@@ -172,13 +177,28 @@ public class Player extends Entity {
             }
         }
 
+        if (gp.keyH.shootKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
+//            SET DEFAULT COORDIANTES , DIRECTION AND USER
+            projectile.set(worldX , worldY , direction , true , this);
 
+//            ADD IT TO THE LIST
+            gp.projectileList.add(projectile);
+
+
+            shotAvailableCounter = 0 ;
+            gp.playSE(10);
+
+        }
         if (invincible) {
             invincibleCounter++ ;
             if (invincibleCounter > 60) {
                 invincible = false ;
                 invincibleCounter = 0 ;
             }
+        }
+
+        if (shotAvailableCounter < 30){
+            shotAvailableCounter ++;
         }
 
     }
@@ -210,7 +230,7 @@ public class Player extends Entity {
             solidArea.height = attackArea.height;
 //          check monster collision with the updated worldX , worldY and solidArea
             int monsterIdx = gp.cChecker.checkEntity(this , gp.monster);
-            damageMonster(monsterIdx) ;
+            damageMonster(monsterIdx , attack) ;
 //            after checking collision , restore the original data
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -317,7 +337,7 @@ public class Player extends Entity {
 
     public void contactMonster(int idx) {
         if (idx != 999) {
-            if (!invincible) {
+            if (!invincible && !gp.monster[idx].dying) {
                 gp.playSE(6);
                 int damage = gp.monster[idx].attack - defense ;
                 if (damage < 0) {
@@ -326,6 +346,9 @@ public class Player extends Entity {
 
 
                 life -= damage ;
+                if (life < 0) {
+                    life = 0;
+                }
                 invincible = true ;
             }
 
@@ -333,7 +356,7 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int idx) {
+    public void damageMonster(int idx , int attack) {
         if (idx != 999) {
             if (!gp.monster[idx].invincible) {
                 gp.playSE(5);

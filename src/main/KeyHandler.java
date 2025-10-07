@@ -4,9 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    public boolean upPressed , downPressed , leftPressed , rightPressed , enterPressed ;
-    boolean showDebugText = false ;
     GamePanel gp ;
+    public boolean upPressed , downPressed , leftPressed , rightPressed , enterPressed , shootKeyPressed;
+    boolean showDebugText = false ;
+
+
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
@@ -101,6 +103,7 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_T) {showDebugText = !showDebugText;}
         if(code == KeyEvent.VK_R) {gp.tileM.loadMap("worldV2");}
         if(code == KeyEvent.VK_C) {gp.gameState = gp.characterState;}
+        if (code == KeyEvent.VK_F) {shootKeyPressed = true ;}
     }
     public void pauseState(int code) {
         if(code ==  KeyEvent.VK_P) {
@@ -171,6 +174,9 @@ public class KeyHandler implements KeyListener {
         }
         if(code ==  KeyEvent.VK_D) {
             rightPressed = false ;
+        }
+        if (code == KeyEvent.VK_F) {
+            shootKeyPressed = false ;
         }
     }
 }

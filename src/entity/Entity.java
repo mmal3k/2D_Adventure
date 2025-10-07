@@ -11,27 +11,21 @@ import java.util.Objects;
 
 public class Entity {
 
-
-    public int speed ;
-    public BufferedImage up1 , up2 , left1 , left2 , right1 , right2 , down1 , down2 ;
+    public GamePanel gp ;
     public BufferedImage attackUp1,attackUp2,attackDown1,attackDown2,attackLeft1,attackLeft2,attackRight1 , attackRight2 ;
-
-
+    public BufferedImage up1 , up2 , left1 , left2 , right1 , right2 , down1 , down2 ;
     public Rectangle solidArea = new Rectangle(0 , 0 ,48 ,48);
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     public int solidAreaDefaultX , solidAreaDefaultY;
     public boolean collisionOn = false ;
 
     public boolean invincible  = false ;
-    public GamePanel gp ;
-
-
-
     public BufferedImage image , image2 , image3 ;
-    public String name ;
 
+    // Character attributes
+    public String name ;
+    public int speed ;
     public int level ;
-//    public int life ;
     public int strength ;
     public int dexterity ;
     public int attack ;
@@ -41,6 +35,9 @@ public class Entity {
     public int coin ;
     public Entity currentWeapon ;
     public Entity currentShield ;
+    public int mana ;
+    public int maxMana ;
+    public Projectile projectile ;
 
 
 
@@ -62,6 +59,7 @@ public class Entity {
     public int actionLockCounter = 0 ;
     public int dyingCounter = 0 ;
     public int hpBarCounter =  0 ;
+    public int shotAvailableCounter = 0 ;
 
     //DIALOG
     String dialogues[] = new String[20];
@@ -75,7 +73,9 @@ public class Entity {
     public int attackValue ;
     public int defenseValue ;
     public String description = "" ;
-    public int type ; //
+
+//    TYPE
+    public int type ;
     public final int type_player = 0;
     public final int type_npc = 1;
     public final int type_monster = 2;
@@ -264,7 +264,6 @@ public class Entity {
         if (dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2 , 1f);}
 
         if (dyingCounter > i*8 ) {
-            dying = false ;
             alive = false;
         }
 
