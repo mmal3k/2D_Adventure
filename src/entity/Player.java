@@ -203,6 +203,14 @@ public class Player extends Entity {
             }
         }
 
+        if (life > maxLife) {
+            life = maxLife;
+        }
+
+        if (mana > maxMana) {
+            mana = maxMana ;
+        }
+
         if (shotAvailableCounter < 30){
             shotAvailableCounter ++;
         }
@@ -252,19 +260,29 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject (int index) {
-        if (index != 999) {
-            String text = "" ;
-            if (inventory.size() != MaxInventorySize) {
-                inventory.add(gp.obj[index]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[index].name + "!" ;
-            }else {
-                text = "Inventory is full !";
+    public void pickUpObject (int i) {
+        if (i != 999) {
+//            PICKUP ONLY ITEMS
+            if (gp.obj[i].type == type_pickUpOnly ) {
+                gp.obj[i].use(this);
+                gp.obj[i] = null ;
+            }
+//            INVENTORY ITEMS
+            else {
+                String text = "" ;
+                if (inventory.size() != MaxInventorySize) {
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[i].name + "!" ;
+                }else {
+                    text = "Inventory is full !";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[i] = null ;
             }
 
-            gp.ui.addMessage(text);
-            gp.obj[index] = null ;
+
+
 
         }
     }
