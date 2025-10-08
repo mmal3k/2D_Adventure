@@ -37,6 +37,7 @@ public class Entity {
     public Entity currentShield ;
     public int mana ;
     public int maxMana ;
+    public int ammo ;
     public Projectile projectile ;
 
 
@@ -142,22 +143,10 @@ public class Entity {
         gp.cChecker.checkObject(this,false);
         gp.cChecker.checkEntity(this , gp.npc);
         gp.cChecker.checkEntity(this , gp.monster);
+
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
-
-        if (this.type == 2 && contactPlayer ) {
-            if (!gp.player.invincible) {
-//                we can give damage
-                gp.playSE(6);
-
-                int damage = attack - gp.player.defense ;
-
-                if (damage < 0) {
-                    damage = 0 ;
-                }
-
-                gp.player.life -= damage ;
-                gp.player.invincible = true ;
-            }
+        if (this.type == type_monster && contactPlayer) {
+            damagePlayer(attack);
         }
 
         // IF collisionOn == false player can move
@@ -185,6 +174,10 @@ public class Entity {
                 invincible = false ;
                 invincibleCounter = 0 ;
             }
+        }
+
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter ++ ;
         }
 
     }
@@ -240,6 +233,7 @@ public class Entity {
                 changeAlpha(g2 , 0.4f);
             }
 
+
             if (dying) {
                 dyingAnimation(g2) ;
             }
@@ -267,9 +261,25 @@ public class Entity {
             alive = false;
         }
 
-
     }
 
+
+    public void damagePlayer(int attack) {
+            if (!gp.player.invincible) {
+//                we can give damage
+                gp.playSE(6);
+
+                int damage = attack - gp.player.defense ;
+
+                if (damage < 0) {
+                    damage = 0 ;
+                }
+
+                gp.player.life -= damage ;
+                gp.player.invincible = true ;
+            }
+
+    }
     public void changeAlpha (Graphics2D g2 , float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , alphaValue));
     }

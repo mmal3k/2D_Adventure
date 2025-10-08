@@ -4,6 +4,7 @@ import main.GamePanel;
 
 public class Projectile extends Entity {
     Entity user ;
+    public int useCost ;
     public Projectile(GamePanel gp) {
         super(gp);
     }
@@ -24,7 +25,11 @@ public class Projectile extends Entity {
                 alive = false ;
             }
         }else {
-
+            boolean contactPlayer = gp.cChecker.checkPlayer(this);
+            if (!gp.player.invincible && contactPlayer && shotAvailableCounter == 30) {
+                damagePlayer(attack);
+                alive = false ;
+            }
         }
         switch(direction) {
             case "up" : worldY -= speed;break;
@@ -47,4 +52,11 @@ public class Projectile extends Entity {
             }
             spriteCounter = 0 ;
         }
+
+    public boolean haveResource (Entity user) {
+        boolean haveResource = false ;
+        return  haveResource ;
+    }
+
+    public void substractResource (Entity user) {}
 }

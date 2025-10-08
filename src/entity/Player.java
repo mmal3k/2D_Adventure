@@ -2,10 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Fireball;
-import object.OBJ_Key;
-import object.OBJ_Shield_Wood;
-import object.OBJ_Sword_Normal;
+import object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -54,6 +51,12 @@ public class Player extends Entity {
         nextLevelExp = 5 ;
         coin = 0 ;
 
+//        mana
+
+        maxMana =  4 ;
+        mana = maxMana ;
+        ammo = 10 ;
+
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
 
@@ -61,6 +64,7 @@ public class Player extends Entity {
         defense = getDefense();
 
         projectile = new OBJ_Fireball(gp);
+//        projectile = new OBJ_Rock(gp);
         setItems();
     }
 
@@ -117,7 +121,6 @@ public class Player extends Entity {
 
 
     public void update() {
-
         if (attacking) {
             attack();
         }
@@ -177,9 +180,12 @@ public class Player extends Entity {
             }
         }
 
-        if (gp.keyH.shootKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
+        if (gp.keyH.shootKeyPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.haveResource(this)) {
 //            SET DEFAULT COORDIANTES , DIRECTION AND USER
             projectile.set(worldX , worldY , direction , true , this);
+
+//          SUBSTRACT THE COST
+            projectile.substractResource(this);
 
 //            ADD IT TO THE LIST
             gp.projectileList.add(projectile);
@@ -264,7 +270,6 @@ public class Player extends Entity {
     }
 
     public void interactWithNPC(int index) {
-
         if (gp.keyH.enterPressed) {
             if(index != 999) {
                     gp.gameState = gp.dialogueState;
@@ -272,8 +277,6 @@ public class Player extends Entity {
                     attackCanceled = true ;
             }
         }
-
-
     }
 
     public void draw(Graphics2D g2){
@@ -343,7 +346,6 @@ public class Player extends Entity {
                 if (damage < 0) {
                     damage = 0 ;
                 }
-
 
                 life -= damage ;
                 if (life < 0) {
