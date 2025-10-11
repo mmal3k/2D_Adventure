@@ -64,7 +64,6 @@ public class Player extends Entity {
         defense = getDefense();
 
         projectile = new OBJ_Fireball(gp);
-//        projectile = new OBJ_Rock(gp);
         setItems();
     }
 
@@ -145,6 +144,13 @@ public class Player extends Entity {
 //            Check monster collision
             int monsterIdx = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIdx);
+
+//            CHECK INTERACTIVE TILE COLLISION
+            int iTileIdx = gp.cChecker.checkEntity(this , gp.iTile);
+
+
+
+
 //            Check event
             gp.eHandler.checkEvent();
 
@@ -245,6 +251,13 @@ public class Player extends Entity {
 //          check monster collision with the updated worldX , worldY and solidArea
             int monsterIdx = gp.cChecker.checkEntity(this , gp.monster);
             damageMonster(monsterIdx , attack) ;
+
+
+            //          CHECK INTERACTIVE TILES COLLISION
+            int iTileIdx = gp.cChecker.checkEntity(this , gp.iTile);
+            damageInteractiveTile(iTileIdx);
+
+
 //            after checking collision , restore the original data
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -446,6 +459,18 @@ public class Player extends Entity {
                 inventory.remove(itemIdx);
             }
         }
+    }
+    public void damageInteractiveTile(int i) {
+        if (i != 999 && gp.iTile[i].destructible && gp.iTile[i].isCorrectItem(this) && !gp.iTile[i].invincible) {
+            gp.iTile[i].playSE(11);
+            gp.iTile[i].life-- ;
+            gp.iTile[i].invincible = true ;
+            if (gp.iTile[i].life == 0) {
+                gp.iTile[i] = gp.iTile[i].getDesroyedForm();
+            }
+
+        }
+
     }
 
 }
