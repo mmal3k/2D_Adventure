@@ -3,6 +3,8 @@ package tile_interactive;
 import entity.Entity;
 import main.GamePanel;
 
+import java.awt.*;
+
 public class IT_DryTree extends InteractiveTile {
     public IT_DryTree(GamePanel gp, int row , int col) {
         super(gp);
@@ -28,6 +30,26 @@ public class IT_DryTree extends InteractiveTile {
 
     public boolean isCorrectItem(Entity entity) {
         return entity.currentWeapon.type == type_axe;
+    }
+
+    public Color getParticleColor () {
+        Color color = new Color(65 , 50 , 30);
+        return color ;
+    }
+
+    public int getParticleSize() {
+        int size = 6 ;
+        return size ;
+    }
+
+    public int getParticleSpeed() {
+        int speed = 1;
+        return speed;
+    }
+
+    public int getParticleMaxLife() {
+        int maxLife = 20 ;
+        return maxLife ;
     }
 
 
