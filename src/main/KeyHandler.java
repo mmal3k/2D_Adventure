@@ -50,7 +50,9 @@ public class KeyHandler implements KeyListener {
                 switch (gp.ui.commandNum){
                     case 0 :
                         gp.ui.titleScreenState = 1;
+                        System.out.println("title Screen State" + gp.ui.titleScreenState);
 //                            gp.gameState = gp.playState;
+
 //                            gp.playMusic(0);
                         break;
                     case 1 :

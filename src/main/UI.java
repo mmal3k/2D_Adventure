@@ -199,7 +199,7 @@ public class UI {
 
     public void drawCharaterScreen() {
         // Create a frame
-        final  int frameX = gp.tileSize;
+        final  int frameX = gp.tileSize * 2;
         final  int frameY = gp.tileSize;
         final  int frameWidth = gp.tileSize *5  ;
         final  int frameHeight = gp.tileSize * 10 ;
@@ -306,7 +306,7 @@ public class UI {
     public void drawInventory(){
 
 //        FRAME
-        int frameX = gp.tileSize * 9 ;
+        int frameX = gp.tileSize * 12;
         int frameY = gp.tileSize ;
         int frameWidth = gp.tileSize * 6 ;
         int frameHeight = gp.tileSize * 5  ;
@@ -400,7 +400,9 @@ public class UI {
     }
 
     public void drawTitleScreen() {
-
+// Clear the screen to avoid remnants of previous titleScreenState frames on tempScreen
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
         if (titleScreenState == 0) {
             //        Title name
             g2.setFont(g2.getFont().deriveFont(Font.BOLD , 96F));
@@ -450,7 +452,8 @@ public class UI {
             if (commandNum == 2) {
                 g2.drawString(">" , x - gp.tileSize, y);
             }
-        }else if (titleScreenState == 1) {
+        }
+        if (titleScreenState == 1) {
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(42F));
 
